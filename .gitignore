@@ -2,4 +2,5 @@
 *.npy
 .DS_Store
 
-.\data\img_output
+data/img_output
+data/models

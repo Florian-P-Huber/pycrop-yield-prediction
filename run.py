@@ -271,8 +271,8 @@ class RunTask:
         rnn_dropout=0.75,
         dense_features=None,
         savedir=Path("data/models"),
-        times="all",
-        pred_years=None,
+        times=36,
+        pred_years=[2017, 2018, 2019, 2020],
         num_runs=2,
         train_steps=10000,
         batch_size=32,
@@ -351,10 +351,10 @@ class RunTask:
             the CPU
 
         """
-        histogram_path = Path(cleaned_data_path) / "histogram_all_full.npz"
+        histogram_path = Path(cleaned_data_path) / "histogram_daymet_all_full.npz"
 
         model = RNNModel(
-            in_channels=9,
+            in_channels=11,
             num_bins=num_bins,
             hidden_size=hidden_size,
             rnn_dropout=rnn_dropout,
