@@ -1,8 +1,9 @@
+from cyp.models.cnn_lstm import CNN_LSTM_Model
 import torch
 from pathlib import Path
 
 from cyp.data import MODISExporter, DataCleaner, Engineer
-from cyp.models import ConvModel, RNNModel, CNN_LSTMModel
+from cyp.models import ConvModel, RNNModel, CNN_LSTM_Model
 
 import fire
 
@@ -471,11 +472,10 @@ class RunTask:
         """
         histogram_path = Path(cleaned_data_path) / "histogram_daymet_all_full.npz"
 
-        model = RNNModel(
+        model = CNN_LSTM_Model(
             in_channels=11,
             num_bins=num_bins,
             hidden_size=hidden_size,
-            rnn_dropout=rnn_dropout,
             dense_features=dense_features,
             savedir=savedir,
             use_gp=use_gp,
