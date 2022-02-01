@@ -67,9 +67,13 @@ class Combine(nn.Module):
             hidden_size=256, 
             num_layers=1,
             batch_first=True)
-        self.dense_out = nn.Sequential(
-            nn.Linear(256,64),
-            nn.ReLU())
+
+        self.device = torch.device('cuda')
+        self.dense_outs = []
+        for i in range(36):
+            self.dense_outs.append(nn.Sequential(
+                nn.Linear(256,64),
+                nn.ReLU()).to(self.device))
 
         self.dropout = nn.Dropout(0.5)
         self.final = nn.Linear(2304, 1)
@@ -110,7 +114,7 @@ class Combine(nn.Module):
             lstm_in_x = r_in[:, i, :].unsqueeze(1)
             _, (hidden_state, cell_state) = self.rnn(
                 lstm_in_x, (hidden_state, cell_state))
-            hidden_list.append(self.dense_out(hidden_state))
+            hidden_list.append(self.dense_outs[i](hidden_state))
 
         out = torch.stack(hidden_list, dim=1).squeeze().permute(1,0,2).contiguous()
         out = out.view(out.shape[0], out.shape[1]*out.shape[2])
