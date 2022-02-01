@@ -117,7 +117,7 @@ class ModelBase:
             pred_years = [pred_years]
 
         if times == "all":
-            times = [32]
+            times = [36]
         else:
             times = range(10, 31, 4)
 
@@ -125,7 +125,7 @@ class ModelBase:
             for run_number in range(1, num_runs + 1):
                 for time in times:
                     print(
-                        f"Training to predict on {pred_year}, Run number {run_number}"
+                        f"Training to predict on {pred_year}, Run number {run_number}, on timeste{time}"
                     )
 
                     results = self._run_1_year(
