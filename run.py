@@ -470,7 +470,7 @@ class RunTask:
             the CPU
 
         """
-        histogram_path = Path(cleaned_data_path) / "histogram_daymet_all_full.npz"
+        histogram_path = Path(cleaned_data_path) / "real_histogram_daymet_all_full.npz"
 
         model = CNN_LSTM_Model(
             in_channels=11,

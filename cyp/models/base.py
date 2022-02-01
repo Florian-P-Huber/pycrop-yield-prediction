@@ -276,7 +276,7 @@ class ModelBase:
         total_size = train_images.shape[0]
         # "Learning rates and stopping criteria are tuned on a held-out
         # validation set (10%)."
-        val_size = total_size // 10
+        val_size = total_size // 5 #default 10
         train_size = total_size - val_size
         print(
             f"After split, training on {train_size} examples, "
