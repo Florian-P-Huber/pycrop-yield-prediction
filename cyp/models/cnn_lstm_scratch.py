@@ -70,13 +70,13 @@ class Combine(nn.Module):
 
         self.device = torch.device('cuda')
         self.dense_outs = []
-        for i in range(36):
+        for i in range(33):
             self.dense_outs.append(nn.Sequential(
                 nn.Linear(256,64),
                 nn.ReLU()).to(self.device))
 
         self.dropout = nn.Dropout(0.5)
-        self.final = nn.Linear(2304, 1)
+        self.final = nn.Linear(64*33, 1)
 
         #some crap that is called in the other code -.-
         dense_features = [256, 1]

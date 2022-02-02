@@ -121,7 +121,7 @@ class ModelBase:
         if times == "all":
             times = [36]
         else:
-            times = range(10, 31, 4)
+            times = times
 
         for pred_year in pred_years:
             for run_number in range(1, num_runs + 1):
