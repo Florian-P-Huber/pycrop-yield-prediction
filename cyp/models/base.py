@@ -7,7 +7,7 @@ import pandas as pd
 from collections import defaultdict, namedtuple
 from tqdm import tqdm
 from datetime import datetime
-import time
+import time as ostime
 
 
 from .gp import GaussianProcess
@@ -173,7 +173,7 @@ class ModelBase:
             data["RMSE_GP"] = rmse_gp_list
             data["ME_GP"] = me_gp_list
         results_df = pd.DataFrame(data=data)
-        timestr = time.strftime("%Y%m%d-%H%M%S")
+        timestr = ostime.strftime("%Y%m%d-%H%M%S")
         results_df.to_csv(self.savedir / f"{str(timestr)}.csv", index=False)
 
     def _run_1_year(

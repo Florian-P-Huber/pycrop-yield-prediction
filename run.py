@@ -273,32 +273,35 @@ class RunTask:
 
         histogram_path = Path(cleaned_data_path) / "real_histogram_daymet_all_full.npz"
 
-        model = CNN_LSTM_scratchModel(
-            in_channels=11,
-            num_bins=num_bins,
-            hidden_size=hidden_size,
-            dense_features=dense_features,
-            savedir=savedir,
-            use_gp=use_gp,
-            sigma=sigma,
-            r_loc=r_loc,
-            r_year=r_year,
-            sigma_e=sigma_e,
-            sigma_b=sigma_b,
-            device=device,
-        )
-        model.run(
-            histogram_path,
-            times,
-            pred_years,
-            num_runs,
-            train_steps,
-            batch_size,
-            starter_learning_rate,
-            weight_decay,
-            l1_weight,
-            patience,
-        )
+
+        for run in range(num_runs):
+            for year in pred_years:
+                model = CNN_LSTM_scratchModel(
+                    in_channels=11,
+                    num_bins=num_bins,
+                    hidden_size=hidden_size,
+                    dense_features=dense_features,
+                    savedir=savedir,
+                    use_gp=use_gp,
+                    sigma=sigma,
+                    r_loc=r_loc,
+                    r_year=r_year,
+                    sigma_e=sigma_e,
+                    sigma_b=sigma_b,
+                    device=device,
+                )
+                model.run(
+                    histogram_path,
+                    times,
+                    [year],
+                    1,
+                    train_steps,
+                    batch_size,
+                    starter_learning_rate,
+                    weight_decay,
+                    l1_weight,
+                    patience,
+                )
 
 
 
