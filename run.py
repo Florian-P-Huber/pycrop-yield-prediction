@@ -199,7 +199,7 @@ class RunTask:
         dense_features=None,
         savedir=Path("data/models"),
         times="all",
-        pred_years=[2017, 2018, 2019, 2020],
+        pred_years=[2016],
         num_runs=2,
         train_steps=10000,
         batch_size=32,
@@ -254,10 +254,10 @@ class RunTask:
         dense_features=None,
         savedir=Path("data/models"),
         times="all",
-        pred_years=[2017, 2018, 2019, 2020],
+        pred_years=[2016],
         num_runs=2,
         train_steps=10000,
-        batch_size=32,
+        batch_size=16,
         starter_learning_rate=1e-3,
         weight_decay=0,
         l1_weight=0,
@@ -271,7 +271,7 @@ class RunTask:
         device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
     ):
 
-        histogram_path = Path(cleaned_data_path) / "real_histogram_daymet_all_full.npz"
+        histogram_path = Path(cleaned_data_path) / "histogram_daymet_all_full.npz"
 
 
         for run in range(num_runs):

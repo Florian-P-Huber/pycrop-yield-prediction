@@ -298,6 +298,7 @@ class ModelBase:
         )
 
         num_epochs = int(train_steps / (train_images.shape[0] / batch_size))
+        num_epochs = 100
         print(f"Training for {num_epochs} epochs")
 
         train_scores = defaultdict(list)
