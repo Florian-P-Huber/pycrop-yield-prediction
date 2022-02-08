@@ -76,7 +76,7 @@ class Combine(nn.Module):
                 nn.ReLU()).to(self.device))
 
         self.dropout = nn.Dropout(0.5)
-        self.final = nn.Linear(64*33, 1)
+        self.final = nn.Linear(64*18, 1)
 
         #some crap that is called in the other code -.-
         dense_features = [256, 1]
