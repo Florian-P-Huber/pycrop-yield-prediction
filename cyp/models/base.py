@@ -13,6 +13,8 @@ import time as ostime
 from .gp import GaussianProcess
 from .loss import l1_l2_loss
 
+from sklearn.metrics import r2_score
+
 
 class ModelBase:
     """
@@ -536,9 +538,10 @@ class ModelBase:
     def analyze_results(true, pred, pred_gp):
         """Calculate ME and RMSE"""
         rmse = np.sqrt(np.mean((true - pred) ** 2))
-        me = np.mean(true - pred)
+        me = np.mean(np.abs(true - pred))
+        coefficient_of_dermination = r2_score(true, pred)
 
-        print(f"Without GP: RMSE: {rmse}, ME: {me}")
+        print(f"Without GP: RMSE: {rmse}, MAE: {me}, R2: {coefficient_of_dermination}, ")
 
         if pred_gp is not None:
             rmse_gp = np.sqrt(np.mean((true - pred_gp) ** 2))

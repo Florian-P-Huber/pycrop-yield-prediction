@@ -88,8 +88,8 @@ class RunTask:
         dropout=0.5,
         dense_features=None,
         savedir=Path("data/models"),
-        times='all',
-        pred_years=[2017, 2018, 2019, 2020],
+        times=[18],
+        pred_years=[2017, 2018, 2019, 2020, 2021],
         num_runs=2,
         train_steps=25000,
         batch_size=32,
@@ -106,7 +106,7 @@ class RunTask:
         device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
     ):
 
-        histogram_path = Path(cleaned_data_path) / "histogram_daymet_all_full.npz"
+        histogram_path = Path(cleaned_data_path) / "more_data_histogramfull.npz"
 
         model = ConvModel(
             in_channels=11,
@@ -200,7 +200,7 @@ class RunTask:
         savedir=Path("data/models"),
         times="all",
         pred_years=[2016],
-        num_runs=2,
+        num_runs=5,
         train_steps=10000,
         batch_size=32,
         starter_learning_rate=1e-3,
@@ -249,13 +249,13 @@ class RunTask:
     def train_cnn_lstm_scratch(
         cleaned_data_path="data/img_output",
         num_bins=32,
-        hidden_size=128,
+        hidden_size=256,
         rnn_dropout=0.75,
         dense_features=None,
         savedir=Path("data/models"),
-        times=[33],
-        pred_years=[2017,2018,2019,2020],
-        num_runs=2,
+        times=[18],
+        pred_years=[2017,2018,2019,2020,2021],
+        num_runs=5,
         train_steps=10000,
         batch_size=16,
         starter_learning_rate=1e-3,
@@ -271,7 +271,7 @@ class RunTask:
         device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
     ):
 
-        histogram_path = Path(cleaned_data_path) / "histogram_daymet_all_full.npz"
+        histogram_path = Path(cleaned_data_path) / "more_data_histogramfull.npz"
 
 
         for run in range(num_runs):
