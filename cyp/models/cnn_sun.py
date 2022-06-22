@@ -7,7 +7,7 @@ from pathlib import Path
 from .base import ModelBase
 
 
-class CNN_LSTM_scratchModel(ModelBase):
+class CNN_Sun_Model(ModelBase):
 
     def __init__(
         self, in_channels=9, num_bins=32,
@@ -62,21 +62,21 @@ class Combine(nn.Module):
     def __init__(self):
         super(Combine, self).__init__()
         self.cnn = CNN()
-        self.rnn = nn.LSTM(
-            input_size=448, 
-            hidden_size=256, 
-            num_layers=1,
-            batch_first=True)
+        #self.rnn = nn.LSTM(
+        #    input_size=448, 
+        #    hidden_size=256, 
+        #    num_layers=1,
+        #    batch_first=True)
 
         self.device = torch.device('cuda')
         self.dense_outs = []
-        for i in range(18):
+        for i in range(34):
             self.dense_outs.append(nn.Sequential(
-                nn.Linear(256,64),
+                nn.Linear(448,64),
                 nn.ReLU()).to(self.device))
 
         self.dropout = nn.Dropout(0.5)
-        self.final = nn.Linear(64*18, 1)
+        self.final = nn.Linear(64*34, 1)
 
         #some crap that is called in the other code -.-
         dense_features = [256, 1]
@@ -98,12 +98,12 @@ class Combine(nn.Module):
         r_in = c_out.view(batch_size, timesteps, -1)
 
 
-        hidden_state = torch.zeros(1, x.shape[0], 256)
-        cell_state = torch.zeros(1, x.shape[0], 256)
+        #hidden_state = torch.zeros(1, x.shape[0], 256)
+        #cell_state = torch.zeros(1, x.shape[0], 256)
 
-        if x.is_cuda:
-            hidden_state = hidden_state.cuda()
-            cell_state = cell_state.cuda()
+        #if x.is_cuda:
+        #    hidden_state = hidden_state.cuda()
+        #    cell_state = cell_state.cuda()
         
         hidden_list = []
         for i in range(r_in.shape[1]):
@@ -112,10 +112,10 @@ class Combine(nn.Module):
             # the behaviour of the Dropout Wrapper used in the original repository
             # https://www.tensorflow.org/api_docs/python/tf/nn/rnn_cell/DropoutWrapper
             lstm_in_x = r_in[:, i, :].unsqueeze(1)
-            _, (hidden_state, cell_state) = self.rnn(
-                lstm_in_x, (hidden_state, cell_state))
-            hidden_list.append(self.dense_outs[i](hidden_state))
+            #_, (hidden_state, cell_state) = self.rnn(
+            #    lstm_in_x, (hidden_state, cell_state))
 
+            hidden_list.append(self.dense_outs[i](lstm_in_x).permute(1,0,2))
 
         out = torch.stack(hidden_list, dim=1).squeeze().permute(1,0,2).contiguous()
         out = out.view(out.shape[0], out.shape[1]*out.shape[2])

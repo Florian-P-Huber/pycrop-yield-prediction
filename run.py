@@ -1,5 +1,6 @@
 from cyp.models.cnn_lstm import CNN_LSTM_Model
 from cyp.models.cnn_lstm_scratch import CNN_LSTM_scratchModel
+from cyp.models.cnn_sun import CNN_Sun_Model
 import torch
 from pathlib import Path
 
@@ -302,6 +303,66 @@ class RunTask:
                     l1_weight,
                     patience,
                 )
+
+    
+    @staticmethod
+    def train_cnn_sun(
+        cleaned_data_path="data/img_output",
+        num_bins=32,
+        hidden_size=256,
+        rnn_dropout=0.75,
+        dense_features=None,
+        savedir=Path("data/models"),
+        times=[34],
+        pred_years=[2017,2018,2019,2020,2021],
+        num_runs=2,
+        train_steps=10000,
+        batch_size=16,
+        starter_learning_rate=1e-3,
+        weight_decay=0,
+        l1_weight=0,
+        patience=10,
+        use_gp=False,
+        sigma=1,
+        r_loc=0.5,
+        r_year=1.5,
+        sigma_e=0.32,
+        sigma_b=0.01,
+        device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+    ):
+
+        histogram_path = Path(cleaned_data_path) / "more_data_histogramfull.npz"
+
+
+        for run in range(num_runs):
+            for year in pred_years:
+                model = CNN_Sun_Model(
+                    in_channels=11,
+                    num_bins=num_bins,
+                    hidden_size=hidden_size,
+                    dense_features=dense_features,
+                    savedir=savedir,
+                    use_gp=use_gp,
+                    sigma=sigma,
+                    r_loc=r_loc,
+                    r_year=r_year,
+                    sigma_e=sigma_e,
+                    sigma_b=sigma_b,
+                    device=device,
+                )
+                model.run(
+                    histogram_path,
+                    times,
+                    [year],
+                    1,
+                    train_steps,
+                    batch_size,
+                    starter_learning_rate,
+                    weight_decay,
+                    l1_weight,
+                    patience,
+                )
+
 
 
 
